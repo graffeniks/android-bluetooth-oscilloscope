@@ -2,6 +2,7 @@ package org.projectproto.yuscope;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.view.Window;
 
 public class BluetoothOscilloscope extends Activity {
 	
@@ -12,7 +13,7 @@ public class BluetoothOscilloscope extends Activity {
     public static final int MESSAGE_DEVICE_NAME = 4;
     public static final int MESSAGE_TOAST = 5;
     
- // Key names received from the BluetoothRfcommClient Handler
+	// Key names received from the BluetoothRfcommClient Handler
     public static final String DEVICE_NAME = "device_name";
     public static final String TOAST = "toast";
     
@@ -20,6 +21,9 @@ public class BluetoothOscilloscope extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        
+        // Set up the window layout
+        requestWindowFeature(Window.FEATURE_NO_TITLE);        
         setContentView(R.layout.main);
     }
 }
