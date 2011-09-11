@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 public class BluetoothOscilloscope extends Activity implements  Button.OnClickListener{
 	
@@ -35,6 +36,9 @@ public class BluetoothOscilloscope extends Activity implements  Button.OnClickLi
 	// bt-uart constants
     private static final int  MAX_LEVEL	= 240;
     
+    // Run/Pause status
+    private boolean bReady = false;
+    
     // Layout Views
     private TextView mBTStatus;
     private Button mConnectButton;
@@ -45,6 +49,7 @@ public class BluetoothOscilloscope extends Activity implements  Button.OnClickLi
     private Button btn_scale_up, btn_scale_down;
     private TextView time_per_div;
     private Button timebase_inc, timebase_dec;
+    private ToggleButton run_buton;
     
     // Name of the connected device
     private String mConnectedDeviceName = null;
@@ -156,6 +161,13 @@ public class BluetoothOscilloscope extends Activity implements  Button.OnClickLi
     			time_per_div.setText(timebase[--timebase_index]);
     		}
     		break;
+    	case R.id.tbtn_runtoggle :
+    		if(run_buton.isChecked()){
+    			bReady = true;
+    		}else{
+    			bReady = false;
+    		}
+    		break;
     	}
     }
     
@@ -206,6 +218,9 @@ public class BluetoothOscilloscope extends Activity implements  Button.OnClickLi
         timebase_dec = (Button) findViewById(R.id.btn_timebase_decrease);
         timebase_inc.setOnClickListener(this);
         timebase_dec.setOnClickListener(this);
+        
+        run_buton = (ToggleButton) findViewById(R.id.tbtn_runtoggle);
+        run_buton.setOnClickListener(this);
         
     	// Initialize the BluetoothRfcommClient to perform bluetooth connections
         mRfcommClient = new BluetoothRfcommClient(this, mHandler);
