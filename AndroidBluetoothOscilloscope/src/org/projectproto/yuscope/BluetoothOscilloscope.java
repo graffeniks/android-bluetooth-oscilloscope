@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,9 +32,15 @@ public class BluetoothOscilloscope extends Activity implements  Button.OnClickLi
     private static final int REQUEST_CONNECT_DEVICE = 1;
     private static final int REQUEST_ENABLE_BT = 2;
     
+	// bt-uart constants
+    private static final int  MAX_LEVEL	= 240;
+    
     // Layout Views
     private TextView mBTStatus;
     private Button mConnectButton;
+    private RadioButton rb1, rb2;
+    private TextView ch1pos_label, ch2pos_label;
+    private Button btn_pos_up, btn_pos_down;
     
     // Name of the connected device
     private String mConnectedDeviceName = null;
@@ -42,6 +49,8 @@ public class BluetoothOscilloscope extends Activity implements  Button.OnClickLi
     // Member object for the RFCOMM services
     private BluetoothRfcommClient mRfcommClient = null;
     
+    
+    static byte ch1_pos = 24, ch2_pos = 17;	// 0 to 40
     
     /** Called when the activity is first created. */
     @Override
@@ -98,8 +107,23 @@ public class BluetoothOscilloscope extends Activity implements  Button.OnClickLi
     	int buttonID;
     	buttonID = v.getId();
     	switch (buttonID){
-    	default:
+    	case R.id.btn_position_up :
+    		if(rb1.isChecked() && (ch1_pos<38) ){
+    			ch1_pos += 1; ch1pos_label.setPadding(0, toScreenPos(ch1_pos), 0, 0);
+    		}
+    		else if(rb2.isChecked() && (ch2_pos<38) ){
+    			ch2_pos += 1; ch2pos_label.setPadding(0, toScreenPos(ch2_pos), 0, 0);
+    		}
     		break;
+    	case R.id.btn_position_down :
+    		if(rb1.isChecked() && (ch1_pos>4) ){
+    			ch1_pos -= 1; ch1pos_label.setPadding(0, toScreenPos(ch1_pos), 0, 0);
+    		}
+    		else if(rb2.isChecked() && (ch2_pos>4) ){
+    			ch2_pos -= 1; ch2pos_label.setPadding(0, toScreenPos(ch2_pos), 0, 0);
+    		}
+    		break;
+
     	}
     }
     
@@ -121,6 +145,19 @@ public class BluetoothOscilloscope extends Activity implements  Button.OnClickLi
 			}    		
     	});
     	
+    	rb1 = (RadioButton)findViewById(R.id.rbtn_ch1);
+        rb2 = (RadioButton)findViewById(R.id.rbtn_ch2);
+
+        ch1pos_label = (TextView) findViewById(R.id.txt_ch1pos);
+        ch2pos_label = (TextView) findViewById(R.id.txt_ch2pos);
+        ch1pos_label.setPadding(0, toScreenPos(ch1_pos), 0, 0);
+        ch2pos_label.setPadding(0, toScreenPos(ch2_pos), 0, 0);
+        
+        btn_pos_up = (Button) findViewById(R.id.btn_position_up);
+        btn_pos_down = (Button) findViewById(R.id.btn_position_down);
+        btn_pos_up.setOnClickListener(this);
+        btn_pos_down.setOnClickListener(this);
+        
     	// Initialize the BluetoothRfcommClient to perform bluetooth connections
         mRfcommClient = new BluetoothRfcommClient(this, mHandler);
     }
@@ -128,6 +165,11 @@ public class BluetoothOscilloscope extends Activity implements  Button.OnClickLi
     private void BTConnect(){
     	Intent serverIntent = new Intent(this, DeviceListActivity.class);
     	startActivityForResult(serverIntent, REQUEST_CONNECT_DEVICE);
+    }
+    
+    private int toScreenPos(byte position){
+    	//return ( (int)MAX_LEVEL - (int)position*6 );
+    	return ( (int)MAX_LEVEL - (int)position*6 - 7);
     }
     
     // The Handler that gets information back from the BluetoothRfcommClient
