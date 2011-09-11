@@ -15,8 +15,8 @@
 -->
 
 <resources>
-    <string name="hello">Hello World, BluetoothOscilloscope!</string>
-    <string name="app_name">BTScope</string>
+
+    <string name="app_name">Bluetooth Oscilloscope</string>
     
     <!--  DeviceListActivity -->
     <string name="title_paired_devices">Paired Devices</string>

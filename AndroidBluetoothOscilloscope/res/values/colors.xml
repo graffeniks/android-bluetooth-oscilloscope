@@ -3,5 +3,6 @@
 
 	<color name="background_color">#C03F7FFF</color>
 	<color name="status_color">#FFFFFFFF</color>
+	<color name="label_color">#FF3FFF3F</color>
 
 </resources>
