@@ -23,6 +23,9 @@
     <string name="title_other_devices">Other Available Devices</string>
     <string name="button_scan">Scan for devices</string>
     <string name="select_device">select a device to connect</string>
+    <string name="none_paired">No devices have been paired</string>
+    <string name="scanning">scanning for devices...</string>
+    <string name="none_found">No devices found</string>
     
     <!--  BluetoothOscilloscope -->
     <string name="button_connect">Connect</string>
