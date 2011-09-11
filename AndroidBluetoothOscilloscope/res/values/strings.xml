@@ -29,5 +29,9 @@
     
     <!--  BluetoothOscilloscope -->
     <string name="button_connect">Connect</string>
+    <string name="bt_not_enabled_leaving">Bluetooth was not enabled. Leaving Bluetooth Oscilloscope.</string>
+    <string name="title_connected_to">connected to: </string>
+    <string name="title_connecting">connecting...</string>
+    <string name="title_not_connected">not connected</string>
     
 </resources>
