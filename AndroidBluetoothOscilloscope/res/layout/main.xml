@@ -35,8 +35,140 @@
     	<org.projectproto.yuscope.WaveformView android:id="@+id/WaveformArea"
 			android:layout_marginLeft="15px" android:layout_height="242px" android:layout_width="322px"
 			/>
+		<TextView android:id="@+id/txt_ch1pos"    	
+	    	android:layout_width="wrap_content" android:layout_height="wrap_content" 
+		    android:textStyle="bold"  android:text="1-"
+		    android:layout_alignTop="@+id/WaveformArea" android:layout_marginLeft="5px"
+		    android:textColor="@color/ch1_color"/>
+		<TextView android:id="@+id/txt_ch2pos"    	
+	    	android:layout_width="wrap_content" android:layout_height="wrap_content" 
+		    android:textStyle="bold"  android:text="2-"
+		    android:layout_alignTop="@+id/WaveformArea" android:layout_marginLeft="5px"
+		    android:textColor="@color/ch2_color"/>
     </RelativeLayout>
+    
+    <LinearLayout android:id="@+id/run_settings"
+		android:orientation="horizontal"
+		android:layout_alignParentRight="true"
+		android:layout_below="@+id/txt_appname"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content" android:layout_marginRight="15px">
+		<TextView android:id="@+id/txt_status"
+			android:text="@string/status_label"
+			android:textColor="@color/label_color"
+			android:layout_below="@+id/txt_appname"
+			android:layout_width="wrap_content" android:layout_height="wrap_content" />
+		<ToggleButton android:id="@+id/tbtn_runtoggle"
+			android:text="@+id/ToggleButton01"
+			android:textOff="@string/status_off"
+			android:textOn="@string/status_on"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content" />
+	</LinearLayout>
+	
+	<LinearLayout android:id="@+id/horizontal_settings"
+		android:orientation="vertical"
+		android:layout_alignParentRight="true"
+		android:layout_below="@+id/run_settings"
+		android:layout_width="120px" android:layout_height="wrap_content">
+		<LinearLayout android:id="@+id/horizontal_values"
+			android:orientation="horizontal"
+			android:layout_alignParentRight="true"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content">
+			<TextView android:id="@+id/txt_timebase_label"
+				android:text="Timebase:" android:textSize="5pt"
+				android:textColor="@color/label_color"
+				android:layout_width="wrap_content" android:layout_height="wrap_content" />
+			<TextView android:id="@+id/txt_timebase"
+				android:text="@string/timebase_default" android:textSize="8pt"
+				android:textColor="@color/timebase_color" android:textStyle="bold"
+				android:layout_width="70px" android:layout_height="wrap_content" />
+		</LinearLayout>
+		<LinearLayout android:id="@+id/horizontal_adjusts"
+			android:orientation="horizontal"
+			android:layout_alignParentRight="true"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content">
+			<Button android:id="@+id/btn_timebase_decrease"
+				android:text="&lt;"
+				android:layout_height="35px"
+				android:layout_width="55px" />
+			<Button android:id="@+id/btn_timebase_increase"
+				android:text="&gt;"
+				android:layout_height="35px"
+				android:layout_width="55px" />
+		</LinearLayout>
+	</LinearLayout>
 
+	<LinearLayout android:id="@+id/position_settings"
+		android:orientation="vertical"
+		android:layout_alignParentRight="true"
+		android:layout_below="@+id/horizontal_settings"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content" android:layout_marginRight="15px">
+		<TextView android:id="@+id/txt_position_label"
+			android:text="Postion"
+			android:textColor="@color/label_color"
+			android:layout_width="wrap_content" android:layout_height="wrap_content" />
+		<Button android:id="@+id/btn_position_up"
+			android:text="up" android:textSize="4pt"
+			android:layout_height="35px" android:layout_width="50px" />
+		<Button android:id="@+id/btn_position_down"
+			android:text="down" android:textSize="4pt"
+			android:layout_height="35px" android:layout_width="50px" />
+	</LinearLayout>
+	
+	<LinearLayout android:id="@+id/vertical_settings"
+		android:orientation="vertical"
+		android:layout_below="@+id/horizontal_settings"
+		android:layout_width="wrap_content" android:layout_height="wrap_content"
+		android:layout_alignLeft="@+id/horizontal_settings">
+		<TextView android:id="@+id/txt_position_label"
+			android:text="Scale"
+			android:textColor="@color/label_color"
+			android:layout_width="wrap_content" android:layout_height="wrap_content" />
+		<Button android:id="@+id/btn_scale_increase"
+			android:text="inc" android:textSize="4pt"
+			android:layout_height="35px" android:layout_width="50px" />
+		<Button android:id="@+id/btn_scale_decrease"
+			android:text="dec" android:textSize="4pt"
+			android:layout_height="35px" android:layout_width="50px" />
+	</LinearLayout>
+	
+	<RadioGroup
+		android:layout_height="wrap_content"
+		android:layout_width="wrap_content"
+		android:id="@+id/rg_channels"
+		android:layout_alignParentLeft="true"
+		android:orientation="horizontal"
+		android:layout_marginLeft="15px" android:layout_below="@+id/Waveform">
+		<RadioButton android:id="@+id/rbtn_ch1"
+			android:textColor="@color/ch1_color"			
+			android:text="CH1:"
+			android:layout_height="35px"
+			android:textSize="5pt"
+			android:layout_width="70px" android:checked="true"/>
+		<TextView android:id="@+id/txt_ch1_scale"
+			android:layout_height="wrap_content"
+			android:text="@string/ch1_scale_default"
+			android:textColor="@color/ch1_color"			
+			android:textSize="7pt"
+			android:layout_width="60px"/>
+		<RadioButton android:id="@+id/rbtn_ch2"
+			android:text="CH2:"
+			android:textColor="@color/ch2_color"
+			android:layout_height="35px"
+			android:textSize="5pt"
+			android:layout_width="70px"/>
+		<TextView android:id="@+id/txt_ch2_scale"
+			android:layout_height="wrap_content"			
+			android:text="@string/ch2_scale_default"
+			android:textColor="@color/ch2_color"
+			android:textSize="7pt"
+			android:layout_width="60px"/>
+	</RadioGroup>
+		
 	<LinearLayout android:id="@+id/bluetooth_settings"
         android:orientation="vertical"
         android:layout_height="wrap_content" android:layout_width="120px"

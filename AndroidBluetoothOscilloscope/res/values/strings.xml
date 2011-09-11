@@ -33,5 +33,11 @@
     <string name="title_connected_to">connected to: </string>
     <string name="title_connecting">connecting...</string>
     <string name="title_not_connected">not connected</string>
+    <string name="status_label">Status</string>
+    <string name="status_off">run</string>
+    <string name="status_on">pause</string>
+    <string name="timebase_default">200us</string>
+    <string name="ch1_scale_default">200mV</string>
+    <string name="ch2_scale_default">500mV</string>
     
 </resources>

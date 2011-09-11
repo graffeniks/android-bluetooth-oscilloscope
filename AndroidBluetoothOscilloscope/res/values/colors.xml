@@ -4,5 +4,8 @@
 	<color name="background_color">#C03F7FFF</color>
 	<color name="status_color">#FFFFFFFF</color>
 	<color name="label_color">#FF3FFF3F</color>
+	<color name="ch1_color">#FFFFFF00</color>
+	<color name="ch2_color">#FFFF0000</color>
+	<color name="timebase_color">#FFFF7F1F</color>
 
 </resources>
