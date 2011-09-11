@@ -42,7 +42,9 @@ public class BluetoothOscilloscope extends Activity implements  Button.OnClickLi
     private TextView ch1pos_label, ch2pos_label;
     private Button btn_pos_up, btn_pos_down;
     private TextView ch1_scale, ch2_scale;
-    private Button btn_scale_up, btn_scale_down;    
+    private Button btn_scale_up, btn_scale_down;
+    private TextView time_per_div;
+    private Button timebase_inc, timebase_dec;
     
     // Name of the connected device
     private String mConnectedDeviceName = null;
@@ -51,7 +53,9 @@ public class BluetoothOscilloscope extends Activity implements  Button.OnClickLi
     // Member object for the RFCOMM services
     private BluetoothRfcommClient mRfcommClient = null;
     
+    static String[] timebase = {"5us", "10us", "20us", "50us", "100us", "200us", "500us", "1ms", "2ms", "5ms", "10ms", "20ms", "50ms" };
     static String[] ampscale = {"10mV", "20mV", "50mV", "100mV", "200mV", "500mV", "1V", "2V", "GND"};
+    static byte timebase_index = 5;
     static byte ch1_index = 4, ch2_index = 5;
     static byte ch1_pos = 24, ch2_pos = 17;	// 0 to 40
     
@@ -142,6 +146,16 @@ public class BluetoothOscilloscope extends Activity implements  Button.OnClickLi
     			ch2_scale.setText(ampscale[++ch2_index]);
     		}
     		break;
+    	case R.id.btn_timebase_increase :
+    		if(timebase_index<(timebase.length-1)){
+    			time_per_div.setText(timebase[++timebase_index]);
+    		}
+    		break;
+    	case R.id.btn_timebase_decrease :
+    		if(timebase_index>0){
+    			time_per_div.setText(timebase[--timebase_index]);
+    		}
+    		break;
     	}
     }
     
@@ -185,6 +199,13 @@ public class BluetoothOscilloscope extends Activity implements  Button.OnClickLi
         btn_scale_down = (Button) findViewById(R.id.btn_scale_decrease);
         btn_scale_up.setOnClickListener(this);
         btn_scale_down.setOnClickListener(this);
+        
+        time_per_div = (TextView)findViewById(R.id.txt_timebase);
+        time_per_div.setText(timebase[timebase_index]);
+        timebase_inc = (Button) findViewById(R.id.btn_timebase_increase);
+        timebase_dec = (Button) findViewById(R.id.btn_timebase_decrease);
+        timebase_inc.setOnClickListener(this);
+        timebase_dec.setOnClickListener(this);
         
     	// Initialize the BluetoothRfcommClient to perform bluetooth connections
         mRfcommClient = new BluetoothRfcommClient(this, mHandler);
