@@ -41,6 +41,8 @@ public class BluetoothOscilloscope extends Activity implements  Button.OnClickLi
     private RadioButton rb1, rb2;
     private TextView ch1pos_label, ch2pos_label;
     private Button btn_pos_up, btn_pos_down;
+    private TextView ch1_scale, ch2_scale;
+    private Button btn_scale_up, btn_scale_down;    
     
     // Name of the connected device
     private String mConnectedDeviceName = null;
@@ -49,7 +51,8 @@ public class BluetoothOscilloscope extends Activity implements  Button.OnClickLi
     // Member object for the RFCOMM services
     private BluetoothRfcommClient mRfcommClient = null;
     
-    
+    static String[] ampscale = {"10mV", "20mV", "50mV", "100mV", "200mV", "500mV", "1V", "2V", "GND"};
+    static byte ch1_index = 4, ch2_index = 5;
     static byte ch1_pos = 24, ch2_pos = 17;	// 0 to 40
     
     /** Called when the activity is first created. */
@@ -123,7 +126,22 @@ public class BluetoothOscilloscope extends Activity implements  Button.OnClickLi
     			ch2_pos -= 1; ch2pos_label.setPadding(0, toScreenPos(ch2_pos), 0, 0);
     		}
     		break;
-
+    	case R.id.btn_scale_increase :
+    		if(rb1.isChecked() && (ch1_index>0)){
+    			ch1_scale.setText(ampscale[--ch1_index]);
+    		}
+    		else if(rb2.isChecked() && (ch2_index>0)){
+    			ch2_scale.setText(ampscale[--ch2_index]);
+    		}
+    		break;
+    	case R.id.btn_scale_decrease :
+    		if(rb1.isChecked() && (ch1_index<(ampscale.length-1))){
+    			ch1_scale.setText(ampscale[++ch1_index]);
+    		}
+    		else if(rb2.isChecked() && (ch2_index<(ampscale.length-1))){
+    			ch2_scale.setText(ampscale[++ch2_index]);
+    		}
+    		break;
     	}
     }
     
@@ -157,6 +175,16 @@ public class BluetoothOscilloscope extends Activity implements  Button.OnClickLi
         btn_pos_down = (Button) findViewById(R.id.btn_position_down);
         btn_pos_up.setOnClickListener(this);
         btn_pos_down.setOnClickListener(this);
+        
+        ch1_scale = (TextView) findViewById(R.id.txt_ch1_scale);
+        ch2_scale = (TextView) findViewById(R.id.txt_ch2_scale);
+        ch1_scale.setText(ampscale[ch1_index]);
+        ch2_scale.setText(ampscale[ch2_index]);
+        
+        btn_scale_up = (Button) findViewById(R.id.btn_scale_increase);
+        btn_scale_down = (Button) findViewById(R.id.btn_scale_decrease);
+        btn_scale_up.setOnClickListener(this);
+        btn_scale_down.setOnClickListener(this);
         
     	// Initialize the BluetoothRfcommClient to perform bluetooth connections
         mRfcommClient = new BluetoothRfcommClient(this, mHandler);
