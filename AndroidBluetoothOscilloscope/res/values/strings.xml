@@ -33,6 +33,7 @@
     <string name="title_connected_to">connected to: </string>
     <string name="title_connecting">connecting...</string>
     <string name="title_not_connected">not connected</string>
+    <string name="not_connected">You are not connected to a device</string>
     <string name="status_label">Status</string>
     <string name="status_off">run</string>
     <string name="status_on">pause</string>

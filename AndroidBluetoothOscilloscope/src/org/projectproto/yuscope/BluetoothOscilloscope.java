@@ -177,6 +177,24 @@ public class BluetoothOscilloscope extends Activity implements  Button.OnClickLi
     	// Stop the Bluetooth RFCOMM services
         if (mRfcommClient != null) mRfcommClient.stop();
     }
+        
+    /**
+     * Sends a message.
+     * @param message  A string of text to send.
+     */
+    private void sendMessage(String message){
+    	// Check that we're actually connected before trying anything
+    	if (mRfcommClient.getState() != BluetoothRfcommClient.STATE_CONNECTED) {
+    		Toast.makeText(this, R.string.not_connected, Toast.LENGTH_SHORT).show();
+    		return;
+    	}
+    	// Check that there's actually something to send
+    	if (message.length() > 0) {
+    		// Get the message bytes and tell the BluetoothRfcommClient to write
+    		byte[] send = message.getBytes();
+    		mRfcommClient.write(send);
+    	}
+    }
     
     private void setupOscilloscope(){
     	
