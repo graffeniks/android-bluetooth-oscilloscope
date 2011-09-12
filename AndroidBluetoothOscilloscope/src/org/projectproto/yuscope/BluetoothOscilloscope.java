@@ -36,6 +36,14 @@ public class BluetoothOscilloscope extends Activity implements  Button.OnClickLi
 	// bt-uart constants
     private static final int  MAX_LEVEL	= 240;
     
+    private static final byte  REQ_DATA = 0x00;
+    private static final byte  ADJ_HORIZONTAL = 0x01;
+    private static final byte  ADJ_VERTICAL = 0x02;
+    private static final byte  ADJ_POSITION = 0x03;
+
+    private static final byte  CHANNEL1 = 0x01;
+    private static final byte  CHANNEL2 = 0x02;
+    
     // Run/Pause status
     private boolean bReady = false;
     
@@ -122,47 +130,64 @@ public class BluetoothOscilloscope extends Activity implements  Button.OnClickLi
     	case R.id.btn_position_up :
     		if(rb1.isChecked() && (ch1_pos<38) ){
     			ch1_pos += 1; ch1pos_label.setPadding(0, toScreenPos(ch1_pos), 0, 0);
+    			sendMessage( new String(new byte[] {ADJ_POSITION, CHANNEL1, ch1_pos}) );
     		}
     		else if(rb2.isChecked() && (ch2_pos<38) ){
     			ch2_pos += 1; ch2pos_label.setPadding(0, toScreenPos(ch2_pos), 0, 0);
+    			sendMessage( new String(new byte[] {ADJ_POSITION, CHANNEL2, ch2_pos}) );
     		}
     		break;
     	case R.id.btn_position_down :
     		if(rb1.isChecked() && (ch1_pos>4) ){
     			ch1_pos -= 1; ch1pos_label.setPadding(0, toScreenPos(ch1_pos), 0, 0);
+    			sendMessage( new String(new byte[] {ADJ_POSITION, CHANNEL1, ch1_pos}) );
     		}
     		else if(rb2.isChecked() && (ch2_pos>4) ){
     			ch2_pos -= 1; ch2pos_label.setPadding(0, toScreenPos(ch2_pos), 0, 0);
+    			sendMessage( new String(new byte[] {ADJ_POSITION, CHANNEL2, ch2_pos}) );
     		}
     		break;
     	case R.id.btn_scale_increase :
     		if(rb1.isChecked() && (ch1_index>0)){
     			ch1_scale.setText(ampscale[--ch1_index]);
+    			sendMessage( new String(new byte[] {ADJ_VERTICAL, CHANNEL1, ch1_index}) );
     		}
     		else if(rb2.isChecked() && (ch2_index>0)){
     			ch2_scale.setText(ampscale[--ch2_index]);
+    			sendMessage( new String(new byte[] {ADJ_VERTICAL, CHANNEL2, ch2_index}) );
     		}
     		break;
     	case R.id.btn_scale_decrease :
     		if(rb1.isChecked() && (ch1_index<(ampscale.length-1))){
     			ch1_scale.setText(ampscale[++ch1_index]);
+    			sendMessage( new String(new byte[] {ADJ_VERTICAL, CHANNEL1, ch1_index}) );
     		}
     		else if(rb2.isChecked() && (ch2_index<(ampscale.length-1))){
     			ch2_scale.setText(ampscale[++ch2_index]);
+    			sendMessage( new String(new byte[] {ADJ_VERTICAL, CHANNEL2, ch2_index}) );
     		}
     		break;
     	case R.id.btn_timebase_increase :
     		if(timebase_index<(timebase.length-1)){
     			time_per_div.setText(timebase[++timebase_index]);
+    			sendMessage( new String(new byte[] {ADJ_HORIZONTAL, timebase_index}) );
     		}
     		break;
     	case R.id.btn_timebase_decrease :
     		if(timebase_index>0){
     			time_per_div.setText(timebase[--timebase_index]);
+    			sendMessage( new String(new byte[] {ADJ_HORIZONTAL, timebase_index}) );
     		}
     		break;
     	case R.id.tbtn_runtoggle :
     		if(run_buton.isChecked()){
+    			sendMessage( new String(new byte[] {
+    					ADJ_HORIZONTAL, timebase_index,
+    					ADJ_VERTICAL, CHANNEL1, ch1_index,
+    					ADJ_VERTICAL, CHANNEL2, ch2_index,
+    					ADJ_POSITION, CHANNEL1, ch1_pos,
+    					ADJ_POSITION, CHANNEL2, ch2_pos,
+    					REQ_DATA}) );
     			bReady = true;
     		}else{
     			bReady = false;
