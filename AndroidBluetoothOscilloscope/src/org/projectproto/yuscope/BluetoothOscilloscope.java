@@ -59,6 +59,8 @@ public class BluetoothOscilloscope extends Activity implements  Button.OnClickLi
     private Button timebase_inc, timebase_dec;
     private ToggleButton run_buton;
     
+    public WaveformView mWaveform = null;
+    
     // Name of the connected device
     private String mConnectedDeviceName = null;
     // Local Bluetooth adapter
@@ -267,6 +269,9 @@ public class BluetoothOscilloscope extends Activity implements  Button.OnClickLi
         
     	// Initialize the BluetoothRfcommClient to perform bluetooth connections
         mRfcommClient = new BluetoothRfcommClient(this, mHandler);
+        
+        // waveform / plot area
+        mWaveform = (WaveformView)findViewById(R.id.WaveformArea);
     }
     
     private void BTConnect(){
