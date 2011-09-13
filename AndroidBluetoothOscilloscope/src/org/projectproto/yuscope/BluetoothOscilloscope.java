@@ -3,10 +3,12 @@ package org.projectproto.yuscope;
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.os.PowerManager;
 import android.view.View;
 import android.view.Window;
 import android.view.View.OnClickListener;
@@ -82,6 +84,9 @@ public class BluetoothOscilloscope extends Activity implements  Button.OnClickLi
     static byte ch1_index = 4, ch2_index = 5;
     static byte ch1_pos = 24, ch2_pos = 17;	// 0 to 40
     
+    // stay awake
+    protected PowerManager.WakeLock mWakeLock;
+    
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -100,6 +105,11 @@ public class BluetoothOscilloscope extends Activity implements  Button.OnClickLi
             finish();
             return;
         }
+        
+        // Prevent phone from sleeping
+        PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
+        this.mWakeLock = pm.newWakeLock(PowerManager.SCREEN_BRIGHT_WAKE_LOCK, "My Tag"); 
+        this.mWakeLock.acquire();
     }
     
     @Override
@@ -211,6 +221,10 @@ public class BluetoothOscilloscope extends Activity implements  Button.OnClickLi
     	super.onDestroy();
     	// Stop the Bluetooth RFCOMM services
         if (mRfcommClient != null) mRfcommClient.stop();
+        // release screen being on
+        if (mWakeLock.isHeld()) { 
+            mWakeLock.release();
+        }
     }
         
     /**
