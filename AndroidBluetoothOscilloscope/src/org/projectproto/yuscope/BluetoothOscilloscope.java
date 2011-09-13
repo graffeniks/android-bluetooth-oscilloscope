@@ -34,7 +34,10 @@ public class BluetoothOscilloscope extends Activity implements  Button.OnClickLi
     private static final int REQUEST_ENABLE_BT = 2;
     
 	// bt-uart constants
+    private static final int MAX_SAMPLES = 640;
     private static final int  MAX_LEVEL	= 240;
+    private static final int  DATA_START = (MAX_LEVEL + 1);
+    private static final int  DATA_END = (MAX_LEVEL + 2);
     
     private static final byte  REQ_DATA = 0x00;
     private static final byte  ADJ_HORIZONTAL = 0x01;
@@ -46,6 +49,11 @@ public class BluetoothOscilloscope extends Activity implements  Button.OnClickLi
     
     // Run/Pause status
     private boolean bReady = false;
+    // receive data 
+    private int[] ch1_data = new int[MAX_SAMPLES/2];
+	private int[] ch2_data = new int[MAX_SAMPLES/2];
+    private int dataIndex=0, dataIndex1=0, dataIndex2=0;
+	private boolean bDataAvailable=false;
     
     // Layout Views
     private TextView mBTStatus;
@@ -303,6 +311,32 @@ public class BluetoothOscilloscope extends Activity implements  Button.OnClickLi
     				break;
     			}
     			break;
+    		case MESSAGE_READ:
+    			byte[] readBuf = (byte[]) msg.obj;
+    			int data_length = msg.arg1;
+    			for(int x=0; x<data_length; x++){
+    				int raw = UByte(readBuf[x]);
+    				if( raw>MAX_LEVEL ){
+    					if( raw==DATA_START ){
+    						bDataAvailable = true;
+    						dataIndex = 0; dataIndex1=0; dataIndex2=0;
+    					}
+    					else if( (raw==DATA_END) || (dataIndex>=MAX_SAMPLES) ){
+    						bDataAvailable = false;
+                    		dataIndex = 0; dataIndex1=0; dataIndex2=0;
+                    		mWaveform.set_data(ch1_data, ch2_data);
+                    		if(bReady){ // send "REQ_DATA" again
+                        		BluetoothOscilloscope.this.sendMessage( new String(new byte[] {REQ_DATA}) );
+                        	}
+                    		break;
+    					}
+    				}
+    				else if( (bDataAvailable) && (dataIndex<(MAX_SAMPLES)) ){ // valid data
+    					if((dataIndex++)%2==0) ch1_data[dataIndex1++] = raw;	// even data
+    					else ch2_data[dataIndex2++] = raw;	// odd data
+    				}
+    			}
+    			break;
     		case MESSAGE_DEVICE_NAME:
     			// save the connected device's name
                 mConnectedDeviceName = msg.getData().getString(DEVICE_NAME);
@@ -315,6 +349,13 @@ public class BluetoothOscilloscope extends Activity implements  Button.OnClickLi
     			break;
     		}
     	}
+    	// signed to unsigned
+    	private int UByte(byte b){
+        	if(b<0) // if negative
+        		return (int)( (b&0x7F) + 128 );
+        	else
+        		return (int)b;
+        }
     };
     
     public void onActivityResult(int requestCode, int resultCode, Intent data){
