@@ -1,3 +1,11 @@
+/***************************************
+ * 
+ * Android Bluetooth Oscilloscope
+ * yus	-	projectproto.blogspot.com
+ * September 2010
+ *  
+ ***************************************/
+
 package org.projectproto.yuscope;
 
 import android.app.Activity;
@@ -325,7 +333,7 @@ public class BluetoothOscilloscope extends Activity implements  Button.OnClickLi
     				break;
     			}
     			break;
-    		case MESSAGE_READ:
+    		case MESSAGE_READ: // todo: implement receive data buffering
     			byte[] readBuf = (byte[]) msg.obj;
     			int data_length = msg.arg1;
     			for(int x=0; x<data_length; x++){
@@ -342,7 +350,7 @@ public class BluetoothOscilloscope extends Activity implements  Button.OnClickLi
                     		if(bReady){ // send "REQ_DATA" again
                         		BluetoothOscilloscope.this.sendMessage( new String(new byte[] {REQ_DATA}) );
                         	}
-                    		break;
+                    		//break;
     					}
     				}
     				else if( (bDataAvailable) && (dataIndex<(MAX_SAMPLES)) ){ // valid data
